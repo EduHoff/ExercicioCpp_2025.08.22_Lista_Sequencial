@@ -52,25 +52,29 @@ void add_fim_lista(pessoa *&lista, int *tamanho,string nome, int cpf) {
 }
 
 void add_lista_index(int index, pessoa *&lista, int *tamanho,string nome, int cpf) {
-    pessoa *nova_lista;
-    alocar_lista(nova_lista, *tamanho+1);
+    if (index >= 0 && index <= *tamanho) {
+        pessoa *nova_lista;
+        alocar_lista(nova_lista, *tamanho+1);
 
-    for (int i=0; i<index;i++) {
-        nova_lista[i].nome = lista[i].nome;
-        nova_lista[i].cpf = lista[i].cpf;
+        for (int i=0; i<index;i++) {
+            nova_lista[i].nome = lista[i].nome;
+            nova_lista[i].cpf = lista[i].cpf;
+        }
+
+        nova_lista[index].nome = nome;
+        nova_lista[index].cpf = cpf;
+
+        for (int i=index; i<*tamanho;i++) {
+            nova_lista[i+1].nome = lista[i].nome;
+            nova_lista[i+1].cpf = lista[i].cpf;
+        }
+
+        delete[] lista;
+        lista = nova_lista;
+        *tamanho = *tamanho + 1;
+    }else {
+        cout << "\nIndex " << index << ": posicao invalida!" ;
     }
-
-    nova_lista[index].nome = nome;
-    nova_lista[index].cpf = cpf;
-
-    for (int i=index; i<*tamanho;i++) {
-        nova_lista[i+1].nome = lista[i].nome;
-        nova_lista[i+1].cpf = lista[i].cpf;
-    }
-
-    delete[] lista;
-    lista = nova_lista;
-    *tamanho = *tamanho + 1;
 }
 
 void imprimirSequencial(pessoa *lista, int tamanho) {
