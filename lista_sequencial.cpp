@@ -73,11 +73,73 @@ void add_lista_index(int index, pessoa *&lista, int *tamanho,string nome, int cp
         lista = nova_lista;
         *tamanho = *tamanho + 1;
     }else {
-        cout << "\nIndex " << index << ": posicao invalida!" ;
+        cout << "\nIndex " << index << ": posicao invalida!";
     }
 }
 
-void imprimirSequencial(pessoa *lista, int tamanho) {
+void remove_inicio_lista(pessoa *&lista, int *tamanho) {
+    if (!(*tamanho <= 0)) {
+        pessoa *nova_lista;
+        alocar_lista(nova_lista, *tamanho-1);
+
+        for (int i=0; i<*tamanho-1;i++) {
+            nova_lista[i].nome = lista[i+1].nome;
+            nova_lista[i].cpf = lista[i+1].cpf;
+        }
+
+        delete[] lista;
+        lista = nova_lista;
+        *tamanho = *tamanho - 1;
+    }else {
+        cout << "\nLista ja esta vazia!";
+    }
+}
+
+void remove_fim_lista(pessoa *&lista, int *tamanho) {
+    if (!(*tamanho <= 0)) {
+        pessoa *nova_lista;
+        alocar_lista(nova_lista, *tamanho-1);
+
+        for (int i=*tamanho-2; i>=0; i--) {
+            nova_lista[i].nome = lista[i].nome;
+            nova_lista[i].cpf = lista[i].cpf;
+        }
+
+        delete[] lista;
+        lista = nova_lista;
+        *tamanho = *tamanho - 1;
+    }else {
+        cout << "\nLista ja esta vazia!";
+    }
+}
+
+void remove_lista_index(int index, pessoa *&lista, int *tamanho) {
+
+    if (*tamanho <= 0) {
+        cout << "\nLista ja esta vazia!";
+    }else if (index >= 0 && index <= *tamanho) {
+        pessoa *nova_lista;
+        alocar_lista(nova_lista, *tamanho-1);
+
+        for (int i=0; i<index; i++) {
+            nova_lista[i].nome = lista[i].nome;
+            nova_lista[i].cpf = lista[i].cpf;
+        }
+
+        for (int i = index+1; i < *tamanho; i++) {
+            nova_lista[i-1].nome = lista[i].nome;
+            nova_lista[i-1].cpf = lista[i].cpf;
+        }
+
+        delete[] lista;
+        lista = nova_lista;
+        *tamanho = *tamanho - 1;
+    }else {
+        cout << "\nIndex " << index << ": posicao invalida!";
+    }
+}
+
+void imprimir_lista(pessoa *lista, int tamanho) {
     for (int i=0; i < tamanho; i++) {
         cout << "\nValor: " << i
         << "; Nome: " << lista[i].nome
@@ -104,17 +166,25 @@ int main(){
         lista[i].cpf = i;
         lista[i].nome = "Nome_Generico_" + to_string(i);
     }
-    imprimirSequencial(lista, tamanho);
+    imprimir_lista(lista, tamanho);
 
     add_inicio_lista(lista, &tamanho, "Eduardo", 777);
-    imprimirSequencial(lista, tamanho);
+    imprimir_lista(lista, tamanho);
 
     add_fim_lista(lista, &tamanho, "Ed", 888);
-    imprimirSequencial(lista, tamanho);
+    imprimir_lista(lista, tamanho);
 
     add_lista_index(2, lista, &tamanho, "Edward", 123);
-    imprimirSequencial(lista, tamanho);
+    imprimir_lista(lista, tamanho);
 
+    remove_inicio_lista(lista, &tamanho);
+    imprimir_lista(lista, tamanho);
+
+    remove_fim_lista(lista, &tamanho);
+    imprimir_lista(lista, tamanho);
+
+    remove_lista_index(1, lista, &tamanho);
+    imprimir_lista(lista, tamanho);
 
     delete[] lista;
     return 0;
